@@ -1,10 +1,12 @@
+// ignore_for_file: prefer__ructors, prefer_const_constructors, prefer_const_constructors_in_immutables
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:testing/screens/auth/reset_pasword_page.dart';
 import 'package:testing/screens/auth/register_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -30,11 +32,10 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
-          reverse: true,
           child: Column(
             children: [
-              Positioned(top: 80, child: _buildTop()),
-              Positioned(bottom: 0, child: _buildBottom()),
+              Positioned(child: _buildTop()),
+              Positioned(child: _buildBottom()),
             ],
           ),
         ),
@@ -46,14 +47,43 @@ class _LoginPageState extends State<LoginPage> {
     return SizedBox(
       width: mediaSize.width,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment
+            .end, // Untuk mengatur posisi gambar dan teks ke atas
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image(
             image: AssetImage(
               'assets/images/hadirbosz.png',
             ),
             width: 150.w,
-            height: 300.h,
+            height: 225.h,
+          ),
+          Container(
+            color: Colors.white,
+            width: 40,
+            height: 4,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            'LOGIN',
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            color: Colors.white,
+            width: 40,
+            height: 4,
+          ),
+          SizedBox(
+            height: 45,
           )
         ],
       ),
@@ -65,14 +95,14 @@ class _LoginPageState extends State<LoginPage> {
       width: mediaSize.width,
       child: Column(
         children: [
-          Card(
-            shape: const RoundedRectangleBorder(
+          Container(
+            child: Card(
+              shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            )),
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
               child: _buildForm(),
             ),
           ),
@@ -82,70 +112,94 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildForm() {
-    return Form(
-      key: _formKey, // Set the form key
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Welcome",
-            style: TextStyle(
-              color: myColor,
-              fontSize: 30,
-              fontWeight: FontWeight.w500,
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Welcome",
+              style: TextStyle(
+                color: myColor,
+                fontSize: 30,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          _buildGreyText("Please login with your information"),
-          const SizedBox(height: 35),
-          _buildGreyText("Username/Nomor Whatsapp"),
-          _buildInputField(
-            emailController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field is required'; // Return an error message
-              }
-              return null; // Return null if the input is valid
-              // Return null if the input is valid
-            },
-          ),
-          const SizedBox(height: 40),
-          _buildGreyText("Password"),
-          _buildPasswordInputField(
-            controller:
-                passwordController, // Pass controller as a named argument
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field is required'; // Return an error message
-              }
-              return null; // Return null if the input is valid
-            },
-          ),
-          const SizedBox(height: 5),
-          _buildRememberForgot(),
-          const SizedBox(height: 20),
-          _buildLoginButton(),
-          const SizedBox(height: 20),
-          _buildOtherLogin(),
-        ],
+            _buildGreyText("Please login with your information"),
+            SizedBox(height: 35),
+            _buildInputField(
+              emailController,
+              hintText: "Username/Nomor Whatsapp",
+              icon: Icons.person, // Tambahkan ikon person di sini
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 20),
+            _buildPasswordInputField(
+              controller: passwordController, // Tambahkan controller di sini
+              hintText: "Password",
+              icon: Icons.lock,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'This field is required';
+                }
+                return null;
+              },
+            ),
+            SizedBox(height: 5),
+            _buildRememberForgot(),
+            SizedBox(height: 10),
+            _buildLoginButton(),
+            SizedBox(height: 20),
+            _buildOtherLogin(),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildInputField(
+    TextEditingController controller, {
+    IconData? icon,
+    String? hintText,
+    String? Function(String?)? validator,
+    bool obscureText = false,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon: icon != null ? Icon(icon) : null,
+      ),
+      obscureText: obscureText,
+      validator: validator,
     );
   }
 
   Widget _buildGreyText(String text) {
     return Text(
       text,
-      style: const TextStyle(color: Colors.grey),
+      style: TextStyle(color: Colors.grey),
     );
   }
 
   Widget _buildPasswordInputField({
-    required TextEditingController
-        controller, // Accept controller as a named argument
+    required TextEditingController controller,
     required String? Function(String?)? validator,
+    String? hintText,
+    IconData? icon, // Tambahkan parameter icon
   }) {
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon: icon != null ? Icon(icon) : null, // Tambahkan ikon di sini
         suffixIcon: GestureDetector(
           onTap: () {
             setState(() {
@@ -159,23 +213,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
       obscureText: !isPasswordVisible,
       validator: validator,
-    );
-  }
-
-  Widget _buildInputField(
-    TextEditingController controller, {
-    IconData? icon, // Add an IconData parameter for the icon
-    String? hintText,
-    String? Function(String?)? validator, // Add a validator function
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        prefixIcon: icon != null ? Icon(icon) : null, // Set the icon here
-      ),
-      obscureText: false, // Change this as needed
-      validator: validator, // Set the validator
     );
   }
 
@@ -206,13 +243,13 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       style: ElevatedButton.styleFrom(
-        shape: const StadiumBorder(),
+        shape: StadiumBorder(),
         elevation: 20,
         shadowColor: myColor,
-        minimumSize: const Size.fromHeight(50),
+        minimumSize: Size.fromHeight(50),
         backgroundColor: Colors.brown,
       ),
-      child: const Text("LOGIN"),
+      child: Text("LOGIN"),
     );
   }
 
@@ -221,7 +258,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: [
           _buildGreyText("Or Login with"),
-          const SizedBox(height: 10),
+          SizedBox(height: 5),
           TextButton(
             onPressed: () {
               // Add your navigation logic here to redirect to the registration page

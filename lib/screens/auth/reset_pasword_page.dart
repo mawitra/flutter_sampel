@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:testing/screens/auth/login_page.dart';
+import 'package:testing/screens/auth/register_page.dart';
 
 class ResetpwPage extends StatefulWidget {
   const ResetpwPage({super.key});
@@ -25,7 +27,6 @@ class _LoginPageState extends State<ResetpwPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
-          reverse: true,
           child: Column(
             children: [
               Positioned(top: 80, child: _buildTop()),
@@ -58,7 +59,7 @@ class _LoginPageState extends State<ResetpwPage> {
               'assets/images/hadirbosz.png',
             ),
             width: 150.w,
-            height: 200.h,
+            height: 150.h,
           ),
         ],
       ),
@@ -92,7 +93,7 @@ class _LoginPageState extends State<ResetpwPage> {
           style: TextStyle(
               color: myColor, fontSize: 30, fontWeight: FontWeight.w500),
         ),
-        _buildGreyText("Please login with your information"),
+        _buildGreyText("conf with your information"),
         const SizedBox(height: 35),
         _buildGreyText("Username / Whatsapp"),
         _buildInputField(emailController),
@@ -142,10 +143,35 @@ class _LoginPageState extends State<ResetpwPage> {
         children: [
           _buildGreyText("Or Login with"),
           const SizedBox(height: 10),
-          Text(
-            "Login | Daftar ",
-            style: TextStyle(
-              color: myColor, // You can customize the color
+          GestureDetector(
+            onTap: () {
+              // Navigate to the login screen when "Login" is tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            },
+            child: Text(
+              "Login",
+              style: TextStyle(
+                color: myColor, // You can customize the color
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          GestureDetector(
+            onTap: () {
+              // Navigate to the registration screen when "Daftar" is tapped
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RegisterPage()),
+              );
+            },
+            child: Text(
+              "Daftar",
+              style: TextStyle(
+                color: myColor, // You can customize the color
+              ),
             ),
           ),
         ],
